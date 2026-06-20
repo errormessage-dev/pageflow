@@ -1,0 +1,71 @@
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("dev.flutter.flutter-gradle-plugin")
+}
+
+// This function reads properties from your local.properties file.
+fun localProperties(): java.util.Properties {
+    val localPropertiesFile = rootProject.file("local.properties")
+    // THIS BLOCK IS NOW 100% CORRECT SYNTACTICALLY
+    if (localPropertiesFile.exists()) {
+        val properties = java.util.Properties()
+        java.io.FileInputStream(localPropertiesFile).use { stream ->
+            properties.load(stream)
+        }
+        return properties
+    }
+    return java.util.Properties()
+}
+
+// Reads the version code and name set by Flutter.
+val flutterVersionCode: String by localProperties()
+val flutterVersionName: String by localProperties()
+
+android {
+    namespace = "com.example.pageflow"
+    // Sets SDK to 35 to resolve plugin warnings.
+    compileSdk = 35
+    ndkVersion = "27.0.12077973"
+
+    compileOptions {
+        // Keeps Java version at 1.8 for compatibility.
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        // Ensures Kotlin's target matches Java's target to prevent conflicts.
+        jvmTarget = "1.8"
+    }
+
+    sourceSets {
+        getByName("main") {
+            java.srcDirs("src/main/kotlin")
+        }
+    }
+
+    defaultConfig {
+        applicationId = "com.example.pageflow"
+        minSdk = 21
+        // Matches the target SDK to the compile SDK.
+        targetSdk = 35
+        versionCode = flutterVersionCode.toInt()
+        versionName = flutterVersionName
+    }
+
+    buildTypes {
+        getByName("release") {
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig = signingConfigs.getByName("debug")
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    // Dependencies are handled by Flutter's pubspec.yaml.
+}

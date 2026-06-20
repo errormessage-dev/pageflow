@@ -1,0 +1,43 @@
+name: pageflow
+description: A mobile app that converts PDF documents to HTML for easier reading on mobile devices.
+publish_to: 'none' 
+version: 1.0.3+3
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Core UI and functionality
+  cupertino_icons: ^1.0.6
+  file_picker: ^8.0.0+1
+  path_provider: ^2.1.3
+  permission_handler: ^11.3.1
+
+  # Native Dart library to parse PDFs. This is the core of our new strategy.
+  # 33.x aligns with Flutter embedding v2-only (Registrar API removed in Flutter 3.29+).
+  syncfusion_flutter_pdf: ^33.1.49
+
+  # WebView is used to *display* the final, simple HTML that our Dart code generates.
+  webview_flutter: ^4.7.0
+  syncfusion_flutter_pdfviewer: ^33.1.49
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+    
+  # Using a more recent version for better code analysis.
+  flutter_lints: ^4.0.0
+
+# The 'flutter' section must be indented correctly and start at the beginning of the line.
+flutter:
+
+  # This line is critical and must be indented by two spaces.
+  uses-material-design: true
+
+  # We no longer need to bundle a 'web' folder in the assets for this approach.
+  # This section is commented out but shows where you would add assets like images or fonts.
+  # assets:
+  #   - assets/images/
