@@ -1,15 +1,47 @@
+# Pageflow — iOS App Store / TestFlight
+#
+# BEFORE THE FIRST BUILD (Codemagic web UI):
+# 1. Team settings → Code signing identities → iOS certificates:
+#    - Upload an Apple Distribution certificate (.p12), OR use automatic signing
+#      (Developer Portal integration + distribution certificate private key).
+# 2. Same page → iOS provisioning profiles:
+#    - Upload an App Store profile for bundle ID com.pageflow.pageflow, OR
+#      click "Fetch profiles" (requires App Store Connect API key on the team).
+# 3. Team settings → Integrations → App Store Connect:
+#    - Add API key (Issuer ID, Key ID, .p8 file). Note the integration NAME.
+# 4. Replace PAGELOW_APP_STORE_CONNECT below with that integration name.
+# 5. App Store Connect → register app with bundle ID com.pageflow.pageflow.
+
 workflows:
   ios-app-store:
     name: iOS App Store Build
-    max_build_duration: 60
+    max_build_duration: 90
     instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: PAGELOW_APP_STORE_CONNECT
     environment:
       flutter: stable
       xcode: latest
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.pageflow.pageflow
     scripts:
-      - name: Install dependencies
+      - name: Install Flutter dependencies
         script: flutter pub get
+      - name: Install CocoaPods dependencies
+        script: |
+          cd ios
+          pod install
+      - name: Set up code signing settings on Xcode project
+        script: xcode-project use-profiles --project ios/Runner.xcodeproj
       - name: Build IPA for App Store
-        script: flutter build ipa --release
+        script: |
+          flutter build ipa --release \
+            --export-options-plist=/Users/builder/export_options.plist
     artifacts:
       - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
