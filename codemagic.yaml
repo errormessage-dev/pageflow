@@ -1,16 +1,15 @@
 # Pageflow — iOS App Store / TestFlight
 #
+# Bundle ID (iOS): com.pageflow.mobile
+# Android Play package stays: com.pageflow.pageflow
+#
 # BEFORE THE FIRST BUILD (Codemagic web UI):
-# 1. Team settings → Code signing identities → iOS certificates:
-#    - Upload an Apple Distribution certificate (.p12), OR use automatic signing
-#      (Developer Portal integration + distribution certificate private key).
-# 2. Same page → iOS provisioning profiles:
-#    - Upload an App Store profile for bundle ID com.pageflow.pageflow, OR
-#      click "Fetch profiles" (requires App Store Connect API key on the team).
-# 3. Team settings → Integrations → App Store Connect:
-#    - Add API key (Issuer ID, Key ID, .p8 file). Note the integration NAME.
+# 1. Code signing certificates: Apple Distribution (.p12)
+# 2. Provisioning profiles: App Store profile for com.pageflow.mobile
+#    (Certificate column must show a green check, not "Not uploaded")
+# 3. Integrations → App Store Connect / Developer Portal: API key (.p8)
 # 4. Replace PAGELOW_APP_STORE_CONNECT below with that integration name.
-# 5. App Store Connect → register app with bundle ID com.pageflow.pageflow.
+# 5. App Store Connect → New App with bundle ID com.pageflow.mobile
 
 workflows:
   ios-app-store:
@@ -24,7 +23,7 @@ workflows:
       xcode: latest
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.pageflow.pageflow
+        bundle_identifier: com.pageflow.mobile
     scripts:
       - name: Install Flutter dependencies
         script: flutter pub get
