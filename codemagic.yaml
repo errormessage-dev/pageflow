@@ -8,7 +8,7 @@
 # 2. Provisioning profiles: App Store profile for com.pageflow.mobile
 #    (Certificate column must show a green check, not "Not uploaded")
 # 3. Integrations → App Store Connect / Developer Portal: API key (.p8)
-# 4. Replace PAGELOW_APP_STORE_CONNECT below with that integration name.
+# 4. integrations.app_store_connect must match the name in Codemagic Settings → Integrations.
 # 5. App Store Connect → New App with bundle ID com.pageflow.mobile
 
 workflows:
@@ -17,7 +17,7 @@ workflows:
     max_build_duration: 90
     instance_type: mac_mini_m2
     integrations:
-      app_store_connect: PAGELOW_APP_STORE_CONNECT
+      app_store_connect: 8N64X72923
     environment:
       flutter: stable
       xcode: latest
