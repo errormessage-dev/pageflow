@@ -58,5 +58,9 @@
     <string>Pageflow needs access to documents to read PDF files.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Pageflow needs access to photo library to select PDF files.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Pageflow may use the camera if you choose to capture a document image for reading as a PDF.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Pageflow may access your location while you use the app if a linked library requests it. Core PDF reading does not require location.</string>
 </dict>
 </plist>
