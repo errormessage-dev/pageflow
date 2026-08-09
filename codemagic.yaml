@@ -12,6 +12,26 @@
 # 5. App Store Connect → New App with bundle ID com.pageflow.mobile
 
 workflows:
+  ios-simulator:
+    name: iOS Simulator Build (for screenshots)
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      flutter: stable          # or a specific version you prefer
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+      - name: Install CocoaPods
+        script: |
+          find . -name "Podfile" -execdir pod install \;
+      - name: Build iOS Simulator .app
+        script: |
+          flutter build ios --simulator --debug --no-codesign
+    artifacts:
+      - build/ios/iphonesimulator/Runner.app
   ios-app-store:
     name: iOS App Store Build
     max_build_duration: 90
